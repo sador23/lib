@@ -27,6 +27,8 @@ namespace Library.API.DAL
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
+        public DbSet<Library.API.Models.User> User { get; set; }
+
     }
 
     
