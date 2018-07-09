@@ -10,11 +10,13 @@ namespace Library.API.Repository
     {
         void Add<T>(T entity) where T : class;
 
-        void Delete<T>(T entity) where T : class;
+        Task<Book> Delete(int id);
 
         Task<bool> SaveAll();
 
         Task<IEnumerable<Book>> GetBooks();
+
+        Book EditBook(Book entity);
 
         Task<Book> GetBook(int id);
     }

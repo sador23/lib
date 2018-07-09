@@ -20,6 +20,8 @@ namespace Library.API.Models
 
         public User user { get; set; }
 
+        public string status { get; set; }
+
         public override bool Equals(Object other)
         {
             try

@@ -8,26 +8,33 @@ using Microsoft.EntityFrameworkCore;
 using Library.API.DAL;
 using Library.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Library.API.Repository;
+using Library.API.DTO;
+using AutoMapper;
 
 namespace Library.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "User,Administrator")]
+    //[Authorize(Roles = "User,Administrator")]
     [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly LibContext _context;
+        private readonly IBookRepository _bookRepository;
+        private readonly IMapper _mapper;
 
-        public BooksController(LibContext context)
+        public BooksController(LibContext context, IBookRepository bookRepository, IMapper mapper)
         {
             _context = context;
+            _bookRepository = bookRepository;
+            _mapper = mapper;
         }
 
         // GET: api/Books
         [HttpGet]
-        public IEnumerable<Book> Getbooks()
+        public async Task<IEnumerable<Book>> Getbooks()
         {
-            return _context.books;
+            return await _bookRepository.GetBooks();
         }
 
         // GET: api/Books/5
@@ -39,7 +46,7 @@ namespace Library.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var book = await _context.books.FindAsync(id);
+            var book = await _bookRepository.GetBook(id);
 
             if (book == null)
             {
@@ -47,41 +54,6 @@ namespace Library.API.Controllers
             }
 
             return Ok(book);
-        }
-
-        // PUT: api/Books/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook([FromRoute] int id, [FromBody] Book book)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(book).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Books
@@ -97,27 +69,6 @@ namespace Library.API.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
-        }
-
-        // DELETE: api/Books/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var book = await _context.books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            _context.books.Remove(book);
-            await _context.SaveChangesAsync();
-
-            return Ok(book);
         }
 
         private bool BookExists(int id)

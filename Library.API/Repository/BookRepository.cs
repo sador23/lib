@@ -23,9 +23,18 @@ namespace Library.API.Repository
             _context.Add(entity);
         }
 
-        public void Delete<T>(T entity) where T : class
+        public async Task<Book> Delete(int id)
         {
-            _context.Remove(entity);
+            var book = await GetBook(id);
+            _context.books.Remove(book);
+            return book;
+        }
+
+        public Book EditBook(Book entity)
+        {
+            var book = _context.books.Update(entity);
+            _context.Entry(book).State = EntityState.Modified;
+            return book.Entity;
         }
 
         public  Task<Book> GetBook(int id)

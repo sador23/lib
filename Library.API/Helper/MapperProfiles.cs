@@ -13,6 +13,7 @@ namespace Library.API.Helper
         public MapperProfiles()
         {
             CreateMap<User, UserForLogin>();
+            CreateMap<Book, BookForEditAdmin>();
         }
     }
 }
