@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Library.API.DAL;
 using Library.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Library.API.Repository;
 
 namespace Library.API.Controllers
 {
@@ -17,10 +18,12 @@ namespace Library.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly LibContext _context;
+        private readonly IBookRepository _bookRepository;
 
-        public UsersController(LibContext context)
+        public UsersController(LibContext context, IBookRepository bookRepository)
         {
             _context = context;
+            _bookRepository = bookRepository;
         }
 
         // GET: api/Users

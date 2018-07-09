@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.API.DAL;
 using Library.API.Helper;
 using Library.API.LibRole;
 using Library.API.Models;
+using Library.API.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +39,10 @@ namespace Library.API
             services.AddIdentity<User, ApplicationRole>().
                 AddEntityFrameworkStores<LibContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddScoped<IBookRepository, BookRepository>();
+
+            services.AddAutoMapper();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
