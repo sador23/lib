@@ -13,7 +13,9 @@ namespace Library.API.Helper
         public MapperProfiles()
         {
             CreateMap<User, UserForLogin>();
+            CreateMap<User, UserForBookPage>();
             CreateMap<Book, BookForEditAdmin>();
+            CreateMap<BookForEditAdmin, Book>();
         }
     }
 }

@@ -32,9 +32,15 @@ namespace Library.API.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<IEnumerable<Book>> Getbooks()
+        public async Task<List<BookForEditAdmin>> Getbooks()
         {
-            return await _bookRepository.GetBooks();
+            var books = await _bookRepository.GetBooks();
+            List<BookForEditAdmin> resultBooks = new List<BookForEditAdmin>();
+            foreach(var item in books)
+            {
+                resultBooks.Add(_mapper.Map<BookForEditAdmin>(item));
+            }
+            return resultBooks;
         }
 
         // GET: api/Books/5
@@ -47,28 +53,30 @@ namespace Library.API.Controllers
             }
 
             var book = await _bookRepository.GetBook(id);
-
             if (book == null)
             {
                 return NotFound();
             }
+            var bookResult = _mapper.Map<BookForEditAdmin>(book);
 
-            return Ok(book);
+            return Ok(bookResult);
         }
 
         // POST: api/Books
         [HttpPost]
-        public async Task<IActionResult> PostBook([FromBody] Book book)
+        public async Task<IActionResult> PostBook([FromBody] BookForEditAdmin book)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.books.Add(book);
+            var bookResult = _mapper.Map<BookForEditAdmin, Book>(book);
+
+            _context.books.Add(bookResult);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return CreatedAtAction("GetBook", new { id = bookResult.Id }, bookResult);
         }
 
         private bool BookExists(int id)

@@ -32,14 +32,12 @@ namespace Library.API.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public IEnumerable<User> GetUser()
+        public IEnumerable<User> GetUsers()
         {
-
-
             return _context.User;
         }
 
-        /*// GET: api/Users/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser([FromRoute] Guid id)
         {
@@ -131,6 +129,7 @@ namespace Library.API.Controllers
 
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
+        [Route("book/delete")]
         public async Task<IActionResult> DeleteBook([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -151,6 +150,7 @@ namespace Library.API.Controllers
         }
 
         [HttpGet]
+        [Route("book/list")]
         public async Task<IActionResult> ListBooks()
         {
             try
@@ -165,6 +165,7 @@ namespace Library.API.Controllers
         }
 
         [HttpGet]
+        [Route("book/get")]
         public async Task<IActionResult> GetBook(int id)
         {
             try
@@ -179,6 +180,7 @@ namespace Library.API.Controllers
 
         // PUT: api/Books/5
         [HttpPut("{id}")]
+        [Route("book/put")]
         public async Task<IActionResult> PutBook([FromRoute] int id, [FromBody] BookForEditAdmin book)
         {
             if (!ModelState.IsValid)
@@ -208,6 +210,6 @@ namespace Library.API.Controllers
         private bool UserExists(Guid id)
         {
             return _context.User.Any(e => e.Id == id);
-        }*/
+        }
     }
 }
