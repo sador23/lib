@@ -44,6 +44,7 @@ namespace Library.API.Controllers
         public async Task<IActionResult> Login(UserForLogin login)
         {
             var user = await _userManager.FindByNameAsync(login.UserName);
+            var userResult = _mapper.Map<UserForBookPage>(user);
             if(user != null && await _userManager.CheckPasswordAsync(user, login.Password))
             {
                 var roleStrings = await _userManager.GetRolesAsync(user);
@@ -67,6 +68,7 @@ namespace Library.API.Controllers
 
                 return Ok(new
                 {
+                    user = userResult,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
