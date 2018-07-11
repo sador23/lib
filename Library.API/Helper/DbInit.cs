@@ -25,6 +25,49 @@ namespace Library.API.Helper
             _logger = logger;
         }
 
+        public async void CreateBooks()
+        {
+            using (var service = _serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = service.ServiceProvider.GetService<LibContext>();
+                var book1 = new Book()
+                {
+                    Author = "Kovács István",
+                    ImagePath = "",
+                    ISBN = "1234",
+                    status = "Active",
+                    Title = "Első könyv"
+                };
+                var book2 = new Book()
+                {
+                    Author = "Kovács István",
+                    ImagePath = "",
+                    ISBN = "1235",
+                    status = "Active",
+                    Title = "Második könyv"
+                };
+                var book3 = new Book()
+                {
+                    Author = "Kovács István",
+                    ImagePath = "",
+                    ISBN = "1236",
+                    status = "Active",
+                    Title = "Harmadik könyv"
+                };
+                var book4 = new Book()
+                {
+                    Author = "Kovács István",
+                    ImagePath = "",
+                    ISBN = "1237",
+                    status = "Reserved",
+                    Title = "Negyedik könyv"
+                };
+
+                context.books.AddRange(book1, book2, book3, book4);
+                await context.SaveChangesAsync();
+            }
+        }
+
         public async void CreateUser()
         {
             _logger.LogWarning("Enter CreateUser");

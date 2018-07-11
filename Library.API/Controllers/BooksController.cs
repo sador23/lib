@@ -11,33 +11,38 @@ using Microsoft.AspNetCore.Authorization;
 using Library.API.Repository;
 using Library.API.DTO;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Library.API.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles = "User,Administrator")]
+    [Authorize(Roles = "User")]
     [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly LibContext _context;
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(LibContext context, IBookRepository bookRepository, IMapper mapper)
+        public BooksController(LibContext context, IBookRepository bookRepository, IMapper mapper, ILogger<BooksController> logger)
         {
             _context = context;
             _bookRepository = bookRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Books
         [HttpGet]
         public async Task<List<BookForEditAdmin>> Getbooks()
         {
+            _logger.LogWarning("enter here");
             var books = await _bookRepository.GetBooks();
             List<BookForEditAdmin> resultBooks = new List<BookForEditAdmin>();
             foreach(var item in books)
             {
+                _logger.LogWarning(item.Author);
                 resultBooks.Add(_mapper.Map<BookForEditAdmin>(item));
             }
             return resultBooks;

@@ -10,6 +10,12 @@ import { AuthServiceService } from '_services/auth-service.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { BooksComponent } from './books/books.component';
+import { UserGuard } from './_guards/UserGuard';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserpageComponent } from './userpage/userpage.component';
+import { BookpageComponent } from './bookpage/bookpage.component';
+import { AdminGuard } from './_guards/AdminGuard';
+import { CommunicationService } from './_services/communication.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +23,10 @@ import { BooksComponent } from './books/books.component';
     NavbarComponent,
     LoginComponent,
     RegisterComponent,
-    BooksComponent
+    BooksComponent,
+    UserListComponent,
+    UserpageComponent,
+    BookpageComponent
   ],
   imports: [
     BrowserModule,
@@ -25,10 +34,14 @@ import { BooksComponent } from './books/books.component';
     FormsModule,
     RouterModule.forRoot([
       {path:'login', component:LoginComponent},
-      {path: 'register',component:RegisterComponent}
+      { path: 'register', component: RegisterComponent },
+      { path: 'bookList', component: BooksComponent, canActivate: [UserGuard] },
+      { path: 'getBook/:id', component: BooksComponent, canActivate: [UserGuard] },
+      { path: 'userlist', component: BooksComponent, canActivate: [AdminGuard] },
+      { path: 'getUser/:id', component: BooksComponent, canActivate: [AdminGuard] },
     ])
   ],
-  providers: [AuthServiceService],
+  providers: [AuthServiceService, CommunicationService, UserGuard, AdminGuard],
   bootstrap: [AppComponent, NavbarComponent]
 })
 export class AppModule { }

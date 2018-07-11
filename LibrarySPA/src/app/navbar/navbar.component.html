@@ -6,21 +6,32 @@
 
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
+      <li class="nav-item active" routerLinkActive="active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Books</a>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/bookList" href="#">Books</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" href="#">Users</a>
       </li>
     </ul>
-    <div class="navbar-nav">
-      <a class="nav-link" routerLink="/register" href="#">Register</a>
+    <div *ngIf="!isLoggedIn()">
+      <div class="navbar-nav" routerLinkActive="active">
+        <a class="nav-link" routerLink="/register" href="#">Register</a>
+      </div>
+      <div class="navbar-nav" routerLinkActive="active">
+        <a class="nav-link" routerLink="/login" href="#">Login</a>
+      </div>
     </div>
-    <div class="navbar-nav">
-      <a class="nav-link" routerLink="/login" href="#">Login</a>
+
+    <div *ngIf="isLoggedIn()">
+      <div class="navbar-nav">
+       <p>Welcome!</p>
+      </div>
+      <div class="navbar-nav">
+        <a class="nav-link" (click)="logout()" href="#">Logout</a>
+      </div>
     </div>
 
   </div>

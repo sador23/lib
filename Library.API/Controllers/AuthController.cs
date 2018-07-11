@@ -69,6 +69,7 @@ namespace Library.API.Controllers
                 return Ok(new
                 {
                     user = userResult,
+                    role = role,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
