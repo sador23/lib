@@ -21,8 +21,6 @@ export class BooksComponent implements OnInit {
 
   getBooks() {
     this.service.getBooks().subscribe(data => {
-      //console.log("data");
-      console.log(data);
       this.models = data;
     });
   }

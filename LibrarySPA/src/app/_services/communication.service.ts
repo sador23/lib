@@ -12,14 +12,23 @@ export class CommunicationService {
   constructor(private http: Http) { }
 
   getBooks() {
-    let token = localStorage.getItem('token');
-    const headers = new Headers({ "Content-type": "application/json", "Authorization":"Bearer " + token});
-    const options = new RequestOptions({ headers: headers });
-
+    const options = this.getOptions();
     return this.http.get(this.url + "/books", options).pipe(map(response => {
-      
       return response.json();
     }));
+  }
 
+  getUsers() {
+    const options = this.getOptions();
+    return this.http.get(this.url + "/users", options).pipe(map(response => {
+      return response.json();
+    }));
+  }
+
+  getOptions() {
+    let token = localStorage.getItem('token');
+    const headers = new Headers({ "Content-type": "application/json", "Authorization": "Bearer " + token });
+    const options = new RequestOptions({ headers: headers });
+    return options;
   }
 }

@@ -16,6 +16,7 @@ namespace Library.API.Helper
             CreateMap<User, UserForBookPage>();
             CreateMap<Book, BookForEditAdmin>();
             CreateMap<BookForEditAdmin, Book>();
+            CreateMap<User, UserForAdmin>();
         }
     }
 }

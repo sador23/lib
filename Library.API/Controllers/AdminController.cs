@@ -32,6 +32,7 @@ namespace Library.API.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Route("users")]
         public IEnumerable<User> GetUsers()
         {
             return _context.User;
