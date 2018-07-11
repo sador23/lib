@@ -1,4 +1,5 @@
-﻿using Library.API.Models;
+﻿using Library.API.DTO;
+using Library.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Library.API.Repository
 
         Task<bool> SaveAll();
 
-        Task<IEnumerable<Book>> GetBooks();
+        Task<List<BookForEditAdmin>> GetBooks();
 
         Book EditBook(Book entity);
 

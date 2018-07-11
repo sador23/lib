@@ -39,13 +39,7 @@ namespace Library.API.Controllers
         {
             _logger.LogWarning("enter here");
             var books = await _bookRepository.GetBooks();
-            List<BookForEditAdmin> resultBooks = new List<BookForEditAdmin>();
-            foreach(var item in books)
-            {
-                _logger.LogWarning(item.Author);
-                resultBooks.Add(_mapper.Map<BookForEditAdmin>(item));
-            }
-            return resultBooks;
+            return books;
         }
 
         // GET: api/Books/5

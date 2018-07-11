@@ -18,6 +18,8 @@ namespace Library.API.Models
 
         public string ImagePath { get; set; }
 
+        public string description { get; set; }
+
         public User user { get; set; }
 
         public string status { get; set; }

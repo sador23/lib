@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Library.API.DAL;
+using Library.API.DTO;
 using Library.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,10 +14,12 @@ namespace Library.API.Repository
     {
 
         private readonly LibContext _context;
+        private readonly IMapper _mapper;
 
-        public BookRepository(LibContext context)
+        public BookRepository(LibContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public void Add<T>(T entity) where T : class
@@ -43,10 +47,15 @@ namespace Library.API.Repository
             return book;
         }
 
-        public async Task<IEnumerable<Book>> GetBooks()
+        public async Task<List<BookForEditAdmin>> GetBooks()
         {
             var books = await _context.books.ToListAsync();
-            return books;
+            List<BookForEditAdmin> resultBooks = new List<BookForEditAdmin>();
+            foreach (var item in books)
+            {
+                resultBooks.Add(_mapper.Map<BookForEditAdmin>(item));
+            }
+            return resultBooks;
         }
 
         public async Task<bool> SaveAll()
