@@ -22,20 +22,22 @@ namespace Library.API.Controllers
         private readonly LibContext _context;
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
 
-        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper)
+        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper, IUserRepository userRepository)
         {
             _context = context;
             _mapper = mapper;
             _bookRepository = bookRepository;
+            _userRepository = userRepository;
         }
 
         // GET: api/Users
         [HttpGet]
         [Route("users")]
-        public IEnumerable<User> GetUsers()
+        public List<UserForAdmin> GetUsers()
         {
-            return _context.User;
+            return _userRepository.GetUsers();
         }
 
         // GET: api/Users/5

@@ -20,7 +20,15 @@ export class CommunicationService {
 
   getUsers() {
     const options = this.getOptions();
-    return this.http.get(this.url + "/users", options).pipe(map(response => {
+    return this.http.get(this.url + "admin/users", options).pipe(map(response => {
+      return response.json();
+    }));
+  }
+
+  getUser(id) {
+    const options = this.getOptions();
+    return this.http.get(this.url + "admin/users/" + id, options).pipe(map(response => {
+      console.log(response.json());
       return response.json();
     }));
   }

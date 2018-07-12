@@ -44,6 +44,7 @@ namespace Library.API
                 .AddDefaultTokenProviders();
 
             services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
 
             services.AddAutoMapper();
 

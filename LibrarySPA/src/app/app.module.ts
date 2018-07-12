@@ -37,8 +37,8 @@ import { CommunicationService } from './_services/communication.service';
       { path: 'register', component: RegisterComponent },
       { path: 'bookList', component: BooksComponent, canActivate: [UserGuard] },
       { path: 'getBook/:id', component: BooksComponent, canActivate: [UserGuard] },
-      { path: 'userlist', component: BooksComponent, canActivate: [AdminGuard] },
-      { path: 'getUser/:id', component: BooksComponent, canActivate: [AdminGuard] },
+      { path: 'userList', component: UserListComponent, canActivate: [AdminGuard] },
+      { path: 'getUser/:id', component: UserpageComponent, canActivate: [AdminGuard] },
     ])
   ],
   providers: [AuthServiceService, CommunicationService, UserGuard, AdminGuard],

@@ -13,12 +13,20 @@ export class UserListComponent implements OnInit {
   constructor(private service : CommunicationService) { }
 
   ngOnInit() {
+    this.getUsers();
   }
 
   getUsers() {
     this.service.getUsers().subscribe(data => {
+      
       this.users = data;
+      console.log(this.users);
     });
   }
+
+  deleteUser(id) {
+    console.log(id);
+  }
+
 
 }
