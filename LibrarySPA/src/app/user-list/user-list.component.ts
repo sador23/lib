@@ -30,7 +30,6 @@ export class UserListComponent implements OnInit {
       this.users = this.users.filter(item => item.id != id);
       this.alertify.success("Deleted User");
     });
-    console.log(id);
   }
 
 

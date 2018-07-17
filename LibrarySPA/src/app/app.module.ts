@@ -17,6 +17,7 @@ import { BookpageComponent } from './bookpage/bookpage.component';
 import { AdminGuard } from './_guards/AdminGuard';
 import { CommunicationService } from './_services/communication.service';
 import { AlertifyService } from './_services/alertify.service';
+import { UsersaveComponent } from './usersave/usersave.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AlertifyService } from './_services/alertify.service';
     BooksComponent,
     UserListComponent,
     UserpageComponent,
-    BookpageComponent
+    BookpageComponent,
+    UsersaveComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,7 @@ import { AlertifyService } from './_services/alertify.service';
       { path: 'getBook/:id', component: BooksComponent, canActivate: [UserGuard] },
       { path: 'userList', component: UserListComponent, canActivate: [AdminGuard] },
       { path: 'getUser/:id', component: UserpageComponent, canActivate: [AdminGuard] },
+      { path: 'addUser', component:UsersaveComponent, canActivate: [AdminGuard]}
     ])
   ],
   providers: [AuthServiceService, CommunicationService, UserGuard, AdminGuard, AlertifyService],

@@ -32,6 +32,13 @@ export class CommunicationService {
     }));
   }
 
+  saveUser(model) {
+    const options = this.getOptions();
+    return this.http.post(this.url + "admin/user/save", model, options).pipe(map(response => {
+      return response;
+    }));
+  }
+
   getUser(id) {
     const options = this.getOptions();
     return this.http.get(this.url + "admin/user/get/" + id, options).pipe(map(response => {

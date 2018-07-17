@@ -12,6 +12,7 @@ using Library.API.Repository;
 using AutoMapper;
 using Library.API.DTO;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library.API.Controllers
 {
@@ -25,14 +26,16 @@ namespace Library.API.Controllers
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
         private readonly ILogger<AdminController> _logger;
+        private readonly UserManager<User> _userManager;
 
-        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper, IUserRepository userRepository, ILogger<AdminController> logger)
+        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper, IUserRepository userRepository, ILogger<AdminController> logger, UserManager<User> userManager)
         {
             _context = context;
             _mapper = mapper;
             _bookRepository = bookRepository;
             _userRepository = userRepository;
             _logger = logger;
+            _userManager = userManager;
         }
 
         // GET: api/Users
@@ -41,6 +44,24 @@ namespace Library.API.Controllers
         public List<UserForAdmin> GetUsers()
         {
             return _userRepository.GetUsers();
+        }
+
+        [HttpPost]
+        [Route("user/save")]
+        public async Task<ActionResult> SaveUser([FromBody] UserForAdmin admin)
+        {
+            User user = new User();
+            user = _mapper.Map<User>(admin);
+            string psw = "rK%bHU5";
+            user.Status = "New";
+            user.EmailConfirmed = false;
+           var success = await _userManager.CreateAsync(user, psw);
+            if (success.Succeeded)
+            {
+                return Ok("Successful");
+            }
+            return StatusCode(500);
+            
         }
 
         // GET: api/Users/5

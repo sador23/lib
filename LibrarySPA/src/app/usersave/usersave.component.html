@@ -1,0 +1,30 @@
+<form #addform="ngForm" (ngSubmit)="saveUser()">
+  <div class="form-group">
+    <label for="userId">Id</label>
+    <input name="id" #id="ngModel" [(ngModel)]="model.id" type="text" class="form-control" id="userId" readonly>
+  </div>
+  <div class="form-group">
+    <label for="email">Email address</label>
+    <input name="email" #email="ngModel" [(ngModel)]="model.email" type="email" class="form-control" id="email">
+  </div>
+  <div class="form-group">
+    <label for="firstName">First Name</label>
+    <input name="firstName" #firstName="ngModel" [(ngModel)]="model.firstName" type="text" class="form-control" id="firstName">
+  </div>
+  <div class="form-group">
+    <label for="lastName">Last Name</label>
+    <input name="lastName" #lastName="ngModel" [(ngModel)]="model.lastName" type="text" class="form-control" id="lastName">
+  </div>
+  <div class="form-group">
+    <label for="status">Status</label>
+    <select class="form-control" id="status" name="status" #status="ngModel" [(ngModel)]="model.status">
+      <option>New</option>
+      <option>Inactive</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="username">Username</label>
+    <input name="username" #username="ngModel" [(ngModel)]="model.username" type="text" class="form-control" id="username">
+  </div>
+  <input type="submit" class="btn btn-success" value="Save"/>
+</form>

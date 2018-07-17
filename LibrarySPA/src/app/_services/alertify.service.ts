@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 declare let alertify: any;
 
 @Injectable({
