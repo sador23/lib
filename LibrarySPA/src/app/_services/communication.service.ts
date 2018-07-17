@@ -25,9 +25,16 @@ export class CommunicationService {
     }));
   }
 
+  deleteUser(id) {
+    const options = this.getOptions();
+    return this.http.delete(this.url + "admin/user/delete/" + id, options).pipe(map(response => {
+      return response.json();
+    }));
+  }
+
   getUser(id) {
     const options = this.getOptions();
-    return this.http.get(this.url + "admin/users/" + id, options).pipe(map(response => {
+    return this.http.get(this.url + "admin/user/get/" + id, options).pipe(map(response => {
       console.log(response.json());
       return response.json();
     }));

@@ -16,6 +16,7 @@ import { UserpageComponent } from './userpage/userpage.component';
 import { BookpageComponent } from './bookpage/bookpage.component';
 import { AdminGuard } from './_guards/AdminGuard';
 import { CommunicationService } from './_services/communication.service';
+import { AlertifyService } from './_services/alertify.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { CommunicationService } from './_services/communication.service';
       { path: 'getUser/:id', component: UserpageComponent, canActivate: [AdminGuard] },
     ])
   ],
-  providers: [AuthServiceService, CommunicationService, UserGuard, AdminGuard],
+  providers: [AuthServiceService, CommunicationService, UserGuard, AdminGuard, AlertifyService],
   bootstrap: [AppComponent, NavbarComponent]
 })
 export class AppModule { }

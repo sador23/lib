@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Library.API.Repository;
 using AutoMapper;
 using Library.API.DTO;
+using Microsoft.Extensions.Logging;
 
 namespace Library.API.Controllers
 {
@@ -23,13 +24,15 @@ namespace Library.API.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper, IUserRepository userRepository)
+        public AdminController(LibContext context, IBookRepository bookRepository, IMapper mapper, IUserRepository userRepository, ILogger<AdminController> logger)
         {
             _context = context;
             _mapper = mapper;
             _bookRepository = bookRepository;
             _userRepository = userRepository;
+            _logger = logger;
         }
 
         // GET: api/Users
@@ -42,6 +45,7 @@ namespace Library.API.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [Route("user/get/{id}")]
         public async Task<IActionResult> GetUser([FromRoute] Guid id)
         {
             if (!ModelState.IsValid)
@@ -109,25 +113,36 @@ namespace Library.API.Controllers
             return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/User/5
         [HttpDelete("{id}")]
+        [Route("user/delete/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+                var user = await _context.User.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                _context.User.Remove(user);
+                await _context.SaveChangesAsync();
+                return Ok(user);
+
+            }
+            catch(Exception ex)
             {
-                return NotFound();
+                _logger.LogWarning("Wierd error");
+                _logger.LogWarning(ex.Message + "\n" + ex.StackTrace);
             }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(user);
+            return Ok("how ?");
+                
         }
 
         // DELETE: api/Books/5
