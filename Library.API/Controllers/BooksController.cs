@@ -8,26 +8,38 @@ using Microsoft.EntityFrameworkCore;
 using Library.API.DAL;
 using Library.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Library.API.Repository;
+using Library.API.DTO;
+using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Library.API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "User,Administrator")]
+    [Authorize(Roles = "User")]
     [ApiController]
     public class BooksController : ControllerBase
     {
         private readonly LibContext _context;
+        private readonly IBookRepository _bookRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<BooksController> _logger;
 
-        public BooksController(LibContext context)
+        public BooksController(LibContext context, IBookRepository bookRepository, IMapper mapper, ILogger<BooksController> logger)
         {
             _context = context;
+            _bookRepository = bookRepository;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/Books
         [HttpGet]
-        public IEnumerable<Book> Getbooks()
+        public async Task<List<BookForEditAdmin>> Getbooks()
         {
-            return _context.books;
+            _logger.LogWarning("enter here");
+            var books = await _bookRepository.GetBooks();
+            return books;
         }
 
         // GET: api/Books/5
@@ -39,85 +51,31 @@ namespace Library.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var book = await _context.books.FindAsync(id);
-
+            var book = await _bookRepository.GetBook(id);
             if (book == null)
             {
                 return NotFound();
             }
+            var bookResult = _mapper.Map<BookForEditAdmin>(book);
 
-            return Ok(book);
-        }
-
-        // PUT: api/Books/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook([FromRoute] int id, [FromBody] Book book)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != book.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(book).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(bookResult);
         }
 
         // POST: api/Books
         [HttpPost]
-        public async Task<IActionResult> PostBook([FromBody] Book book)
+        public async Task<IActionResult> PostBook([FromBody] BookForEditAdmin book)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.books.Add(book);
+            var bookResult = _mapper.Map<BookForEditAdmin, Book>(book);
+
+            _context.books.Add(bookResult);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
-        }
-
-        // DELETE: api/Books/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBook([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var book = await _context.books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound();
-            }
-
-            _context.books.Remove(book);
-            await _context.SaveChangesAsync();
-
-            return Ok(book);
+            return CreatedAtAction("GetBook", new { id = bookResult.Id }, bookResult);
         }
 
         private bool BookExists(int id)
